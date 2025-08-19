@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Programs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #283593;
+            --light-blue: #e8f0fe;
+            --text-color-light: #f0f4f8;
+            --text-color-dark: #333;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --hover-shadow: rgba(0, 0, 0, 0.25);
+            --button-color: #fdd835;
+            --button-text-color: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-blue);
+            color: var(--text-color-light);
+            margin: 0;
+            padding: 4rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--secondary-blue);
+            border-radius: 15px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 10px 25px var(--card-shadow);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(0);
+            border-radius: 15px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 0;
+        }
+
+        .card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 20px 40px var(--hover-shadow);
+        }
+
+        .card:hover::before {
+            transform: scale(1);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-heading {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--text-color-light);
+        }
+        
+        .card-info-list {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .card-info-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .card-info-list li::before {
+            content: '✓';
+            color: var(--button-color);
+            margin-right: 10px;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: #ffd800;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2rem 1rem;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-heading">Python Programming Internship</h2>
+                <ul class="card-info-list">
+                    <li>Duration: 1 month</li>
+                    <li>Location: Virtual</li>
+                    <li>Stipend: -</li>
+                    <li>Start Date: 1 Jan 2025</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">View Details</a>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-heading">Java Programming Internship</h2>
+                <ul class="card-info-list">
+                    <li>Duration: 2 months</li>
+                    <li>Location: Virtual</li>
+                    <li>Stipend: ₹5000/month</li>
+                    <li>Start Date: 1 Feb 2025</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">View Details</a>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-heading">Web Development Internship</h2>
+                <ul class="card-info-list">
+                    <li>Duration: 3 months</li>
+                    <li>Location: Remote</li>
+                    <li>Stipend: ₹8000/month</li>
+                    <li>Start Date: 1 Mar 2025</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">View Details</a>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-heading">Data Science Internship</h2>
+                <ul class="card-info-list">
+                    <li>Duration: 6 months</li>
+                    <li>Location: Hybrid</li>
+                    <li>Stipend: ₹12000/month</li>
+                    <li>Start Date: 1 Apr 2025</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">View Details</a>
+        </div>
+    </div>
+
+</body>
+</html>
