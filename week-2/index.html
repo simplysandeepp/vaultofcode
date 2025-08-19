@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="page-header">
+        <h1>Interactive Resume Builder</h1>
+        <p>Fill out the form to create your professional resume.</p>
+    </header>
+
+    <main class="container">
+        <section class="input-form">
+            <h2>Your Information</h2>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+
+            <form id="resume-form">
+                <div class="form-section personal-details">
+                    <h3>Personal Details</h3>
+                    <input type="text" id="name" placeholder="Full Name" required>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Profile Summary</h3>
+                    <textarea id="profile-summary" rows="5" placeholder="A brief summary of your skills and experience..."></textarea>
+                </div>
+
+                <div class="form-section" id="education-container">
+                    <h3>Education</h3>
+                    <div class="education-entry">
+                        <input type="text" class="education-degree" placeholder="Degree (e.g., B.Sc. in Computer Science)">
+                        <input type="text" class="education-institution" placeholder="University/Institution">
+                        <input type="text" class="education-dates" placeholder="Dates Attended (e.g., 2018-2022)">
+                    </div>
+                </div>
+                <button type="button" id="add-education-btn">Add Another Education</button>
+
+                <div class="form-section">
+                    <h3>Skills</h3>
+                    <input type="text" id="skills-input" placeholder="Type a skill and press Enter">
+                    <div id="skills-list"></div>
+                </div>
+
+                <div class="form-section" id="experience-container">
+                    <h3>Experience</h3>
+                    <div class="experience-entry">
+                        <input type="text" class="experience-company" placeholder="Company Name">
+                        <input type="text" class="experience-position" placeholder="Position Title">
+                        <input type="text" class="experience-dates" placeholder="Dates Worked (e.g., 2022-Present)">
+                        <textarea class="experience-description" rows="3" placeholder="Description of your responsibilities..."></textarea>
+                    </div>
+                </div>
+                <button type="button" id="add-experience-btn">Add Another Experience</button>
+
+                <div class="form-buttons">
+                    <button type="button" id="clear-form-btn">Clear Form</button>
+                    <button type="button" id="download-btn">Download as PDF</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="resume-preview" id="resume-preview">
+            <div class="resume-content">
+                <div class="resume-header">
+                    <h1 id="preview-name">Full Name</h1>
+                    <div class="contact-info">
+                        <span id="preview-email">email@example.com</span> |
+                        <span id="preview-phone">+123-456-7890</span>
+                    </div>
+                </div>
+
+                <div class="resume-section" id="preview-profile-summary">
+                    <h3>Profile Summary</h3>
+                    <p id="preview-summary-text">A brief summary will appear here once you start typing in the form.</p>
+                </div>
+
+                <div class="resume-section" id="preview-education">
+                    <h3>Education</h3>
+                    </div>
+
+                <div class="resume-section" id="preview-skills">
+                    <h3>Skills</h3>
+                    <ul class="skills-list">
+                        </ul>
+                </div>
+
+                <div class="resume-section" id="preview-experience">
+                    <h3>Experience</h3>
+                    </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
