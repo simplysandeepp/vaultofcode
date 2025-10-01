@@ -130,6 +130,8 @@ The system automatically generates comprehensive visualizations:
 9. **Quality Heatmap**: IoU scores across 100 samples
 10. **Best vs Worst**: Comparison of top/bottom predictions
 
+![Alt text](assets/distribution_graph.png)
+
 ## 📊 Performance Metrics
 
 The model is evaluated using:
@@ -191,10 +193,12 @@ All outputs are saved to organized directories:
 ```
 
 ## 🎯 Target Performance
-
 - **Accuracy**: 95-96%
 - **Dice Coefficient**: >0.92
 - **IoU**: >0.85
+![Alt text](assets/prediction.png)
+![Alt text](assets/training_outout_graph.png)
+
 
 ## 🛠️ Customization
 
