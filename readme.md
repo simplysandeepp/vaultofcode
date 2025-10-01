@@ -79,6 +79,8 @@ Dataset/dataset/
     ├── images/
     └── masks/
 ```
+## Dataset Classification
+![Alt text](assets/data_distribution.png)
 
 ### Dataset Format
 
@@ -86,8 +88,9 @@ Dataset/dataset/
 - **Masks**: PNG format (binary masks, 0=no spill, 255=oil spill)
 - Image-mask pairs must have corresponding filenames
 
-## Dataset Classification
-![Alt text](assets/data_distribution.png)
+### Dataset Distribution
+![Alt text](assets/dataset_distribution.png)
+
 
 ### Training
 
