@@ -170,6 +170,13 @@ combined_loss = binary_crossentropy + dice_loss
 - Prefetching and caching for data pipeline
 - Parallel data loading with AUTOTUNE
 
+## 🎯 Target Performance
+- **Accuracy**: 95-96%
+- **Dice Coefficient**: >0.92
+- **IoU**: >0.85
+![Alt text](assets/prediction.png)
+![Alt text](assets/training_outout_graph.png)
+
 ## 📁 Output Files
 
 All outputs are saved to organized directories:
@@ -191,13 +198,8 @@ All outputs are saved to organized directories:
 │   └── model_layer_distribution.png
 └── logs/                      # TensorBoard logs
 ```
-
-## 🎯 Target Performance
-- **Accuracy**: 95-96%
-- **Dice Coefficient**: >0.92
-- **IoU**: >0.85
-![Alt text](assets/prediction.png)
-![Alt text](assets/training_outout_graph.png)
+## Best and Worst Prediction
+![Alt text](assets/best_worst_prediction.png)
 
 
 ## 🛠️ Customization
@@ -219,6 +221,10 @@ DISABLE_EARLY_STOPPING = True
 IMG_HEIGHT = 512  # Higher resolution (requires more memory)
 IMG_WIDTH = 512
 ```
+## Visualizations
+![Alt text](assets/confusion_matrix.png)
+![Alt text](assets/learning_rate_graph.png)
+![Alt text](assets/heatmap.png)
 
 ## 📝 Notes
 
