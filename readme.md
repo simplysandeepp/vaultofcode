@@ -222,8 +222,14 @@ IMG_HEIGHT = 512  # Higher resolution (requires more memory)
 IMG_WIDTH = 512
 ```
 ## Visualizations
+
+### Confusion Matrix
 ![Alt text](assets/confusion_matrix.png)
+
+### Learning Rate
 ![Alt text](assets/learning_rate_graph.png)
+
+### Heatmap
 ![Alt text](assets/heatmap.png)
 
 ## 📝 Notes
