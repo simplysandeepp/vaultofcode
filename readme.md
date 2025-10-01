@@ -34,6 +34,7 @@ Enhanced Attention U-Net
     ├── Level 3: 128 filters + attention
     └── Level 4: 64 filters + attention
 ```
+![Alt text](assets/model_layer_distribution.png)
 
 **Key Components**:
 - Residual connections in all convolutional blocks
