@@ -63,42 +63,6 @@ This project implements a state-of-the-art semantic segmentation model for detec
 
 ---
 
-## Architecture
-
-### Enhanced U-Net Structure
-
-```
-Input (256x256x3)
-    ↓
-Encoder Block 1 (64 filters) ──→ Skip Connection 1
-    ↓ MaxPool                         ↓
-Encoder Block 2 (128 filters) ─→ Skip Connection 2
-    ↓ MaxPool                         ↓
-Encoder Block 3 (256 filters) ─→ Skip Connection 3
-    ↓ MaxPool                         ↓
-Encoder Block 4 (512 filters) ─→ Skip Connection 4
-    ↓ MaxPool                         ↓
-Bridge (1024 filters)
-    ↓ Upsample
-Decoder Block 1 (512) ←─ Attention Gate 4 ←─┘
-    ↓ Upsample
-Decoder Block 2 (256) ←─ Attention Gate 3 ←─┘
-    ↓ Upsample
-Decoder Block 3 (128) ←─ Attention Gate 2 ←─┘
-    ↓ Upsample
-Decoder Block 4 (64) ←── Attention Gate 1 ←─┘
-    ↓
-Output (256x256x1) - Sigmoid Activation
-```
-
-**Key Components:**
-- **Residual Blocks**: Each conv block includes skip connections
-- **Attention Gates**: Focus on relevant features before concatenation
-- **Dropout**: Applied in encoder levels 2-4 (20% rate) for regularization
-- **Batch Normalization**: After each convolution for stable training
-
----
-
 ## Dataset Structure
 
 ```
@@ -114,6 +78,19 @@ Dataset/
         ├── images/  # Test images
         └── masks/   # Test masks
 ```
+## Dataset Classification
+![Alt text](assets/data_distribution.png)
+
+## 1. Dataset Distribution
+Here we see a bar graph showing how the dataset was split:
+
+- **Training set**: 811 images (maximum)  
+- **Validation set**: 203 images  
+- **Test set**: 254 images  
+
+This balanced split ensures the model learns well during training and also generalizes properly when tested on unseen data.
+
+---
 
 **Requirements:**
 - Images: RGB format (.jpg/.jpeg)
@@ -150,8 +127,6 @@ drive.mount('/content/drive')
 ```
 
 ---
-
-## Detailed Code Walkthrough
 
 ### Cell 1: Google Drive Mounting
 
@@ -215,10 +190,6 @@ if gpus:
 - **Reduced memory usage** (16-bit vs 32-bit floats)
 - **Maintained accuracy** (loss computed in FP32)
 
-**Why Memory Growth?**
-- Prevents TensorFlow from allocating all GPU memory upfront
-- Allows other processes to use GPU
-- Prevents Out-of-Memory (OOM) errors
 
 #### 2.3 Dataset Path Configuration
 
@@ -234,17 +205,6 @@ VAL_IMAGES = os.path.join(VAL_DIR, 'images')
 VAL_MASKS = os.path.join(VAL_DIR, 'masks')
 TEST_IMAGES = os.path.join(TEST_DIR, 'images')
 TEST_MASKS = os.path.join(TEST_DIR, 'masks')
-```
-
-**Path Verification:**
-```python
-for dir_path, dir_name in [(TRAIN_IMAGES, 'Train Images'), ...]:
-    if os.path.exists(dir_path):
-        file_count = len([f for f in os.listdir(dir_path) 
-                         if os.path.isfile(os.path.join(dir_path, f))])
-        print(f"✓ {dir_name}: {file_count} files")
-    else:
-        print(f"✗ {dir_name}: NOT FOUND!")
 ```
 
 This ensures all required directories exist before training begins.
@@ -269,17 +229,6 @@ DISABLE_EARLY_STOPPING = False  # Set True for guaranteed full training
 - **LR 0.0001**: Prevents overshooting optimal weights
 - **30 Epochs**: Sufficient for convergence with early stopping
 - **Warmup**: Prevents early training instability
-
-#### 2.5 Directory Creation
-
-```python
-os.makedirs('models', exist_ok=True)
-os.makedirs('results', exist_ok=True)
-os.makedirs('visualizations', exist_ok=True)
-os.makedirs('logs', exist_ok=True)
-```
-
-Creates output folders for saved models, results, visualizations, and TensorBoard logs.
 
 ---
 
@@ -311,6 +260,18 @@ def load_image_paths(image_dir, mask_dir, subset=1.0):
     
     return image_paths, mask_paths
 ```
+### Dataset Distribution
+
+## 2. Data Characteristics – Coverage, Brightness, Contrast
+This distribution graph shows three aspects:
+
+- **Oil spill coverage %** – Average coverage is about **75%**, meaning most images have large spill regions.  
+- **Brightness distribution** – Dataset has a good range of illumination.  
+- **Contrast distribution** – Dataset includes variety in water textures.  
+
+This helps ensure the model doesn’t overfit to only one type of image.
+![Alt text](assets/distribution_graph.png)
+![Alt text](assets/dataset_distribution.png)
 
 **Features:**
 - **Sorted Loading**: Ensures image-mask pairing consistency
@@ -467,25 +428,6 @@ def visualize_dataset_distribution(train_images, val_images, test_images=None):
     plt.show()
 ```
 
-**Output**: [Image will be added here]
-
-**Purpose**: Verify balanced dataset split and identify potential data imbalance.
-
-#### 3.6 Visualization 2: Sample Images with Masks
-
-**Output**: [Image will be added here]
-
-**Purpose**: Visually inspect data quality and annotation accuracy.
-
-#### 3.7 Visualization 3: Data Statistics
-
-**Output**: [Image will be added here]
-
-**Purpose**: Understand dataset characteristics:
-- **Coverage**: Percentage of pixels containing oil spills
-- **Brightness**: Overall image illumination
-- **Contrast**: Pixel intensity variation
-
 ---
 
 ### Cell 4: Enhanced U-Net Model Architecture
@@ -542,6 +484,21 @@ Residual connections solve the vanishing gradient problem, enabling deeper netwo
 4. **Precision**: True Positives / (True Positives + False Positives)
 5. **Recall**: True Positives / (True Positives + False Negatives)
 
+**Total Layers = 118**
+
+1. Input Layer → 1  
+2. Conv2D → 44  
+3. Batch Normalization → 18  
+4. Activation → 26  
+5. Add (Residual connections) → 13  
+6. MaxPooling2D → 4  
+7. Dropout → 4  
+8. Conv2DTranspose (Up sampling) → 4  
+9. Multiply (Attention gates) → 4  
+10. Concatenate (Skip connections) → 4 
+
+![Alt text](assets/model_layer_distribution.png)
+
 ---
 
 ### Cell 5: Training with Advanced Callbacks
@@ -554,6 +511,13 @@ Residual connections solve the vanishing gradient problem, enabling deeper netwo
 - **Prevents Early Instability**: Random initialization can cause large gradients
 - **Smooth Start**: Gradually "wakes up" the network
 - **Better Final Performance**: Avoids bad local minima early in training
+### Learning Rate
+![Alt text](assets/learning_rate_graph.png)
+
+### 4. Learning Rate Graph
+- At the beginning, the learning rate **gradually increases** during the first 5 epochs (warm-up).  
+- Then it flattens to the optimal value, allowing the model to learn effectively without overshooting.  
+
 
 **Schedule:**
 - Epochs 1-5: LR increases from 0.00001 → 0.0001
@@ -590,16 +554,6 @@ Minimum:   0.0000001
 - Epoch 11-20: Refinement (Dice: 0.85 → 0.92)
 - Epoch 21-30: Fine-tuning (Dice: 0.92 → 0.95+)
 
-#### 5.5 Visualization 5: Training History
-
-**Output**: [Image will be added here]
-
-**What to Look For:**
-- **Convergence**: Both curves plateau
-- **Overfitting**: Train improves but validation degrades
-- **Underfitting**: Both curves still improving at end
-- **Optimal Point**: Green star marks best validation performance
-
 ---
 
 ### Cell 6: Comprehensive Evaluation and Visualizations
@@ -608,18 +562,20 @@ Minimum:   0.0000001
 
 #### 6.1 Detailed Prediction Visualization
 
-**Output**: [Image will be added here]
-
 **Column Interpretation:**
 1. **Original**: Input satellite/aerial image
 2. **Ground Truth**: Expert-annotated oil spill mask
 3. **Confidence**: Heatmap showing model certainty (blue=low, red=high)
 4. **Prediction**: Thresholded binary mask (0.5 cutoff)
 5. **Overlay**: Red regions show detected oil spills on original image
+![Alt text](assets/prediction.png)
 
-#### 6.2 Confusion Matrix
 
-**Output**: [Image will be added here]
+## 6. Confusion Matrix
+![Alt text](assets/confusion_matrix.png)
+- Most *“no spill”* and *“spill”* cases are classified correctly.  
+- **94.4% recall** for oil spill detection → model rarely misses a spill.  
+- Few misclassifications compared to total → strong reliability.  
 
 **Matrix Interpretation:**
 ```
@@ -630,24 +586,22 @@ No Spill  │    TN    │   FP    │
 Spill     │    FN    │   TP    │
 ```
 
-#### 6.3 Quality Heatmap
+## 7. Heatmap (Segmentation Quality)
+IoU heatmap across the dataset:
+![Alt text](assets/heatmap.png)
 
-**Output**: [Image will be added here]
+- **Green** → very high IoU (accurate segmentations).  
+- **Yellow/Red** → weaker cases.  
+- IoU ranges from **0.31 (lowest)** to **0.84 (best)**. 
 
-**Color Legend:**
-- **Green**: Excellent segmentation (IoU > 0.8)
-- **Yellow**: Good segmentation (IoU 0.6-0.8)
-- **Red**: Poor segmentation (IoU < 0.6)
+--- 
 
-#### 6.4 Best vs Worst Predictions
-
-**Output**: [Image will be added here]
+## Best and Worst Prediction
+![Alt text](assets/best_worst_prediction.png)
 
 **Analysis Value:**
-- **Worst Cases**: Reveal model weaknesses (e.g., small spills, complex backgrounds)
-- **Best Cases**: Show model strengths (e.g., clear boundaries, high contrast)
-- **Pattern Recognition**: Identify systematic failures vs. random errors
-- **Improvement Targets**: Guide future data augmentation or architecture changes
+- **Worst cases** (left): IoU close to 0 → failures in tiny spills or confusing water textures.  
+- **Best cases** (right): IoU **0.77–0.84+**, near-perfect segmentation. 
 
 ---
 
@@ -664,6 +618,8 @@ Based on the enhanced architecture and training strategy, you should achieve:
 | **IoU** | 0.86-0.90 | 0.83-0.87 | 0.82-0.86 |
 | **Precision** | 0.93-0.96 | 0.91-0.94 | 0.90-0.93 |
 | **Recall** | 0.91-0.94 | 0.89-0.92 | 0.88-0.91 |
+
+![Alt text](assets/training_outout_graph.png)
 
 ### Training Timeline
 
@@ -687,36 +643,47 @@ Epoch 26-30: Convergence
   Loss: 0.12 → 0.09
 ```
 
-## 📄 License
+---
 
-This project is for educational and research purposes.
+## Citation
+
+If you use this code in your research, please cite:
+
+```bibtex
+@software{oil_spill_detection_2024,
+  title = {Enhanced U-Net for Oil Spill Detection},
+  author = {[Sandeep Prajapati]},
+  year = {2025},
+  url = {[https://github.com/simplysandeepp/INFOSYS-_INTERNSHIP-OIL_SPILL_DETECTION-.git]}
+}
+```
 
 ---
 
-## 👥 Contributing
+## License
 
-Contributions are welcome! Areas for improvement:
-- Dataset expansion
-- Model architecture enhancements
-- Deployment solutions
-- Documentation improvements
+This project is licensed under the Infosys Springbaord License.
 
 ---
 
-## 📧 Contact
+## Acknowledgments
 
-Sandeep Prajapati - https://sandeepp.in/
-For questions or collaborations, please open an issue in the repository.
-
----
-
-## 🙏 Acknowledgments
-
-- Dataset providers for satellite imagery
-- TensorFlow/Keras team for the framework
-- U-Net architecture creators
+- **U-Net Architecture**: Ronneberger et al. (2015)
+- **Attention Mechanisms**: Oktay et al. (2018)
+- **Framework**: TensorFlow/Keras team
 
 ---
 
-**Last Updated:** October 2025  
-**Version:** 1.0 (Optimized)
+## Contact
+
+For questions or issues:
+- Open an issue on GitHub
+- Email: [contact@sandeepp.in]
+- Project Link: [https://sandeepp.in/]
+
+  ---
+
+# 🙏 Thank You!  
+
+<img src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif" width="500">
+<br><br>
