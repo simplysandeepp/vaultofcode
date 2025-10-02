@@ -3,7 +3,6 @@
 A comprehensive deep learning solution for automated oil spill detection in satellite/aerial imagery using an advanced U-Net architecture with attention gates, residual connections, and mixed precision training.
 
 ---
-![](https://github.com/Voyz/voyz_public/blob/master/databay_promo_vidA_gif_A03.gif)
 
 ## Table of Contents
 
