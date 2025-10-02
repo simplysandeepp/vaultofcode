@@ -428,25 +428,6 @@ def visualize_dataset_distribution(train_images, val_images, test_images=None):
     plt.show()
 ```
 
-**Output**: [Image will be added here]
-
-**Purpose**: Verify balanced dataset split and identify potential data imbalance.
-
-#### 3.6 Visualization 2: Sample Images with Masks
-
-**Output**: [Image will be added here]
-
-**Purpose**: Visually inspect data quality and annotation accuracy.
-
-#### 3.7 Visualization 3: Data Statistics
-
-**Output**: [Image will be added here]
-
-**Purpose**: Understand dataset characteristics:
-- **Coverage**: Percentage of pixels containing oil spills
-- **Brightness**: Overall image illumination
-- **Contrast**: Pixel intensity variation
-
 ---
 
 ### Cell 4: Enhanced U-Net Model Architecture
@@ -533,7 +514,7 @@ Residual connections solve the vanishing gradient problem, enabling deeper netwo
 ### Learning Rate
 ![Alt text](assets/learning_rate_graph.png)
 
-## 4. Learning Rate Graph
+### 4. Learning Rate Graph
 - At the beginning, the learning rate **gradually increases** during the first 5 epochs (warm-up).  
 - Then it flattens to the optimal value, allowing the model to learn effectively without overshooting.  
 
@@ -573,16 +554,6 @@ Minimum:   0.0000001
 - Epoch 11-20: Refinement (Dice: 0.85 → 0.92)
 - Epoch 21-30: Fine-tuning (Dice: 0.92 → 0.95+)
 
-#### 5.5 Visualization 5: Training History
-
-**Output**: [Image will be added here]
-
-**What to Look For:**
-- **Convergence**: Both curves plateau
-- **Overfitting**: Train improves but validation degrades
-- **Underfitting**: Both curves still improving at end
-- **Optimal Point**: Green star marks best validation performance
-
 ---
 
 ### Cell 6: Comprehensive Evaluation and Visualizations
@@ -591,14 +562,13 @@ Minimum:   0.0000001
 
 #### 6.1 Detailed Prediction Visualization
 
-**Output**: [Image will be added here]
-
 **Column Interpretation:**
 1. **Original**: Input satellite/aerial image
 2. **Ground Truth**: Expert-annotated oil spill mask
 3. **Confidence**: Heatmap showing model certainty (blue=low, red=high)
 4. **Prediction**: Thresholded binary mask (0.5 cutoff)
 5. **Overlay**: Red regions show detected oil spills on original image
+![Alt text](assets/prediction.png)
 
 
 ## 6. Confusion Matrix
@@ -649,7 +619,6 @@ Based on the enhanced architecture and training strategy, you should achieve:
 | **Precision** | 0.93-0.96 | 0.91-0.94 | 0.90-0.93 |
 | **Recall** | 0.91-0.94 | 0.89-0.92 | 0.88-0.91 |
 
-![Alt text](assets/prediction.png)
 ![Alt text](assets/training_outout_graph.png)
 
 ### Training Timeline
